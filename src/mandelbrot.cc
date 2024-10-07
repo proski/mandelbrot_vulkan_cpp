@@ -82,7 +82,7 @@ class MandelbrotApp {
     for (const auto &layer_property : layer_props) {
       std::cerr << "  " << layer_property.layerName << "\t\t"
                 << layer_property.description << std::endl;
-      if (std::string(layer_property.layerName) == kValidationLayer) {
+      if (std::string{kValidationLayer} == layer_property.layerName) {
         enabled_layers_.push_back(kValidationLayer);
       }
     }
@@ -95,7 +95,7 @@ class MandelbrotApp {
               << std::endl;
     for (const auto &extension_prop : extension_props) {
       std::cerr << "  " << extension_prop.extensionName << std::endl;
-      if (std::string(extension_prop.extensionName) == kDebugReportExtension) {
+      if (std::string{kDebugReportExtension} == extension_prop.extensionName) {
         enabled_extensions_.push_back(kDebugReportExtension);
       }
     }
@@ -264,7 +264,8 @@ class MandelbrotApp {
     auto pipeline_create_info = vk::ComputePipelineCreateInfo();
     pipeline_create_info.setStage(shader_stage_create_info)
         .setLayout(*pipeline_layout_);
-    pipeline_ = device_->createComputePipelineUnique({}, pipeline_create_info);
+    pipeline_ =
+	device_->createComputePipelineUnique({}, pipeline_create_info).value;
   }
 
   void CreateCommandPool() {
